@@ -9,8 +9,8 @@ export default async function handler(req, res) {
 
     // Aap apne Telegram Bot ka Token aur Chat ID yahan direct rakh sakte hain 
     // ya Vercel Environment Variables me set kar sakte hain (process.env.BOT_TOKEN)
-    const BOT_TOKEN = "8951307689:AAFkIRx2qfismG77Y7y6J_nUa5gjCHafrek"; 
-    const CHAT_ID = "6076330929";
+    const BOT_TOKEN = "8691554314:AAHLaryhy3JvzsmkYCaYbOpVdt8ivu0ygMg"; 
+    const CHAT_ID = "6165279206";
 
     let telegramMessage = "";
 
