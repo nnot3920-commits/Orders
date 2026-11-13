@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Secure Delivery</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #f1f5f9; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-3 sm:p-4 text-slate-800">
+
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/80 border border-slate-100 overflow-hidden flex flex-col transition-all duration-300">
+        
+        <!-- Header Section -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white text-center relative">
+            <div class="absolute top-4 left-4">
+                <i class="fa-solid fa-shield-halved text-2xl opacity-80"></i>
+            </div>
+            <h1 class="text-xl font-bold tracking-wide">Delivery Address</h1>
+            <p class="text-xs text-blue-100 mt-1">Please fill your shipping details below</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="p-6 flex-1">
+            
+            <form id="checkout-form" onsubmit="handleOrderSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Full Name</label>
+                    <input type="text" id="fullname" required placeholder="Enter your full name" 
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Mobile Number</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 font-medium text-sm">+91</span>
+                        <input type="tel" id="phone" maxlength="10" inputmode="numeric" required placeholder="10-digit mobile number" 
+                            class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10)">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Pincode</label>
+                        <input type="tel" id="pincode" maxlength="6" inputmode="numeric" required placeholder="6-digit PIN" 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,6)">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">City</label>
+                        <input type="text" id="city" required placeholder="City / District" 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">State</label>
+                    <input type="text" id="state" required placeholder="State" 
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Full Address (House No, Building, Street)</label>
+                    <textarea id="address" rows="3" required placeholder="Enter complete address details..." 
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 resize-none"></textarea>
+                </div>
+
+                <button type="submit" id="order-btn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-200 flex items-center justify-center gap-2 text-sm mt-4">
+                    <span>Place Order</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </form>
+
+            <!-- Success Screen -->
+            <div id="success-screen" class="hidden text-center py-6">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl animate-bounce">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2 class="text-xl font-bold text-slate-800 mb-2">Order Placed Successfully!</h2>
+                <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl text-blue-900 text-xs leading-relaxed mb-6">
+                    <p class="font-semibold mb-1"><i class="fa-solid fa-truck-fast"></i> Delivery Information</p>
+                    7 दिन या 15 दिन के बीच में आपका order आपके address में चला जाएगा।
+                </div>
+                <button onclick="resetForm()" 
+                    class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-6 rounded-xl text-sm transition-all">
+                    Back to Home
+                </button>
+            </div>
+
+        </div>
+
+        <div class="bg-slate-50 border-t border-slate-100 py-3 px-6 text-center text-[11px] text-slate-400">
+            Secure Checkout &bull; 100% Safe Delivery
+        </div>
+    </div>
+
+    <script>
+        async function handleOrderSubmit(event) {
+            event.preventDefault();
+
+            const fullname = document.getElementById('fullname').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const pincode = document.getElementById('pincode').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const address = document.getElementById('address').value.trim();
+
+            if (phone.length !== 10) {
+                alert('Please enter a valid 10-digit mobile number.');
+                return;
+            }
+
+            const btn = document.getElementById('order-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Processing...';
+
+            try {
+                // Vercel ke backend API par request bhej rahe hain
+                const response = await fetch('/api/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'order',
+                        fullname,
+                        phone,
+                        pincode,
+                        city,
+                        state,
+                        address
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('checkout-form').classList.add('hidden');
+                    document.getElementById('success-screen').classList.remove('hidden');
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Network error. Please check your connection.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Place Order';
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('checkout-form').reset();
+            document.getElementById('success-screen').classList.add('hidden');
+            document.getElementById('checkout-form').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
